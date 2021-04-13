@@ -7,7 +7,7 @@ import lotty.core.model.{CircleTile, Green, Red, White}
 
 class PlayerTest extends AnyFlatSpec with should.Matchers {
 
-  "Player" should "chow correctly" in {
+  "Player" should "chow with 5,6 to form a set 5,6,7." in {
 
     val player = Player(
       playerId = PlayerId("test"),
@@ -25,7 +25,7 @@ class PlayerTest extends AnyFlatSpec with should.Matchers {
     )
   }
 
-  it should "pung correctly" in {
+  it should "pung a 5, to form a set 5,5,5" in {
     val player = Player(
       playerId = PlayerId("test"),
       displayedTiles = Seq(Red, Red, Red),

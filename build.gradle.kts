@@ -1,8 +1,10 @@
 plugins {
+    base
     scala
 }
 
-allprojects {
+subprojects {
+
     repositories {
         mavenCentral()
     }

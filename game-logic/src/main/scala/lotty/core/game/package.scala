@@ -33,6 +33,24 @@ package object game {
         case _ => true
       }
     }
-  }
 
+    /**
+     * Subtraction operator
+     *
+     * @param rightHandSide Tiles
+     * @return tiles - rightHandSide
+     */
+    def subtract(rightHandSide: Seq[Tile]): Seq[Tile] = {
+      rightHandSide.foldLeft(tiles) {
+        case (tilesSeq, tileToMove) =>
+          val indexOfTile = tilesSeq.indexOf(tileToMove)
+          if (indexOfTile >= 0) {
+            tilesSeq.take(indexOfTile) ++ tilesSeq.drop(indexOfTile + 1)
+          }
+          else {
+            tilesSeq
+          }
+      }
+    }
+  }
 }

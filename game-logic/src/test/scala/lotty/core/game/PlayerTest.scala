@@ -34,7 +34,7 @@ class PlayerTest extends AnyFlatSpec with should.Matchers {
       handTile = Seq(CircleTile(5), CircleTile(5), Green, White)
     )
 
-    val postPungPlayer = player.pung(CircleTile(5), CircleTile(5), Green)
+    val postPungPlayer = player.pung(CircleTile(5), Green)
 
     postPungPlayer should equal(Player(
       playerId = PlayerId("test"),
@@ -50,10 +50,10 @@ class PlayerTest extends AnyFlatSpec with should.Matchers {
       playerId = PlayerId("test"),
       displayedFlowers = Seq.empty,
       displayedTiles = Seq.empty,
-      handTile = Seq(CircleTile(5), CircleTile(5),  CircleTile(5), Green, White)
+      handTile = Seq(CircleTile(5), CircleTile(5), CircleTile(5), Green, White)
     )
 
-    val postKongPlayer = player.kong(CircleTile(5), CircleTile(5), Red, Green)
+    val postKongPlayer = player.kong(CircleTile(5), Red, Green)
 
     postKongPlayer should equal(Player(
       playerId = PlayerId("test"),

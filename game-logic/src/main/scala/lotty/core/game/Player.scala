@@ -21,7 +21,6 @@ final case class Player(
   }
 
   def pung(tileToPung: Tile,
-           actionableTileToPung: Tile,
            tileToDiscard: Tile): Player = {
     this.copy(
       displayedTiles = this.displayedTiles ++ Seq(Pung(tileToPung)),
@@ -30,7 +29,6 @@ final case class Player(
   }
 
   def kong(tileToKong: Tile,
-           actionableTileToKong: Tile,
            tilePicked: Tile,
            tileToDiscard: Tile): Player = {
     this.copy(

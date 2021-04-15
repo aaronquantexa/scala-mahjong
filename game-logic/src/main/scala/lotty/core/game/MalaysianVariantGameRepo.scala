@@ -40,15 +40,15 @@ final case class MalaysianVariantGameRepo(
 
     if(this.playerId1.playerId == playerId)
       updateDiscardTiles.copy(
-        playerId1 = updateDiscardTiles.playerId1.pung(tileToPung,actionableTile(),tileToDiscard)
+        playerId1 = updateDiscardTiles.playerId1.pung(actionableTile(),tileToDiscard)
       )
     else if(this.playerId2.playerId == playerId)
       updateDiscardTiles.copy(
-        playerId2 = updateDiscardTiles.playerId2.pung(tileToPung,actionableTile(),tileToDiscard)
+        playerId2 = updateDiscardTiles.playerId2.pung(actionableTile(),tileToDiscard)
       )
     else
       updateDiscardTiles.copy(
-        playerId3 = updateDiscardTiles.playerId3.pung(tileToPung,actionableTile(),tileToDiscard)
+        playerId3 = updateDiscardTiles.playerId3.pung(actionableTile(),tileToDiscard)
       )
   }
 
@@ -59,17 +59,17 @@ final case class MalaysianVariantGameRepo(
 
     if (this.playerId1.playerId == playerId)
       updateDiscardTiles.copy(
-        playerId1 = updateDiscardTiles.playerId1.kong(tileToKong, actionableTile(), pickStack.last, tileToDiscard),
+        playerId1 = updateDiscardTiles.playerId1.kong(actionableTile(), pickStack.last, tileToDiscard),
         pickStack = pickStack.dropLast()
       )
     else if (this.playerId2.playerId == playerId)
       updateDiscardTiles.copy(
-        playerId2 = updateDiscardTiles.playerId2.kong(tileToKong, actionableTile(), pickStack.last, tileToDiscard),
+        playerId2 = updateDiscardTiles.playerId2.kong(actionableTile(), pickStack.last, tileToDiscard),
         pickStack = pickStack.dropLast()
       )
     else
       updateDiscardTiles.copy(
-        playerId3 = updateDiscardTiles.playerId3.kong(tileToKong, actionableTile(), pickStack.last, tileToDiscard),
+        playerId3 = updateDiscardTiles.playerId3.kong(actionableTile(), pickStack.last, tileToDiscard),
         pickStack = pickStack.dropLast()
       )
   }

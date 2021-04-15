@@ -1,6 +1,6 @@
 package lotty.core.game
 
-import lotty.core.model.{Chow, Flower, Meld, Pung, Tile}
+import lotty.core.model.{Chow, Flower, Kong, Meld, Pung, Tile}
 
 final case class Player(
                          playerId: PlayerId,
@@ -26,6 +26,16 @@ final case class Player(
     this.copy(
       displayedTiles = this.displayedTiles ++ Seq(Pung(tileToPung)),
       handTile = this.handTile subtract Seq(tileToPung, tileToPung, tileToDiscard)
+    )
+  }
+
+  def kong(tileToKong: Tile,
+           actionableTileToKong: Tile,
+           tilePicked: Tile,
+           tileToDiscard: Tile): Player = {
+    this.copy(
+      displayedTiles = this.displayedTiles ++ Seq(Kong(tileToKong)),
+      handTile = (this.handTile ++ Seq(tilePicked)) subtract Seq(tileToKong, tileToKong, tileToKong, tileToDiscard)
     )
   }
 }

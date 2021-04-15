@@ -16,8 +16,7 @@ final case class MalaysianVariantGameRepo(
 
   def chow(playerId: PlayerId, tile1ToChowWith: Tile, tile2ToChowWith: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
     val updateDiscardTiles = this.copy(
-      //Drop actionableTile and add player discarded tile
-      discardedTiles = this.discardedTiles.take(discardedTiles.size - 1) ++ Seq(tileToDiscard)
+      discardedTiles = this.discardedTiles.dropLast() ++ Seq(tileToDiscard)
     )
 
     if(this.playerId1.playerId == playerId)
@@ -36,8 +35,7 @@ final case class MalaysianVariantGameRepo(
 
   def pung(playerId: PlayerId, tileToPung: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
     val updateDiscardTiles = this.copy(
-      //Drop actionableTile and add player discarded tile
-      discardedTiles = this.discardedTiles.take(discardedTiles.size - 1) ++ Seq(tileToDiscard)
+      discardedTiles = this.discardedTiles.dropLast() ++ Seq(tileToDiscard)
     )
 
     if(this.playerId1.playerId == playerId)
@@ -51,6 +49,28 @@ final case class MalaysianVariantGameRepo(
     else
       updateDiscardTiles.copy(
         playerId3 = updateDiscardTiles.playerId3.pung(tileToPung,actionableTile(),tileToDiscard)
+      )
+  }
+
+  def kong(playerId: PlayerId, tileToKong: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
+    val updateDiscardTiles = this.copy(
+      discardedTiles = this.discardedTiles.dropLast() ++ Seq(tileToDiscard)
+    )
+
+    if (this.playerId1.playerId == playerId)
+      updateDiscardTiles.copy(
+        playerId1 = updateDiscardTiles.playerId1.kong(tileToKong, actionableTile(), pickStack.last, tileToDiscard),
+        pickStack = pickStack.dropLast()
+      )
+    else if (this.playerId2.playerId == playerId)
+      updateDiscardTiles.copy(
+        playerId2 = updateDiscardTiles.playerId2.kong(tileToKong, actionableTile(), pickStack.last, tileToDiscard),
+        pickStack = pickStack.dropLast()
+      )
+    else
+      updateDiscardTiles.copy(
+        playerId3 = updateDiscardTiles.playerId3.kong(tileToKong, actionableTile(), pickStack.last, tileToDiscard),
+        pickStack = pickStack.dropLast()
       )
   }
 

@@ -55,5 +55,9 @@ package object game {
           }
       }
     }
+
+    def dropLast(): Seq[Tile] = {
+      tiles.take(tiles.size - 1)
+    }
   }
 }

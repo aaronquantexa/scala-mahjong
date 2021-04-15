@@ -1,10 +1,11 @@
 package lotty.core.game
 
-import lotty.core.model.Tile
+import lotty.core.model.{Chow, Flower, Meld, Pung, Tile}
 
 final case class Player(
                          playerId: PlayerId,
-                         displayedTiles: Seq[Tile],
+                         displayedFlowers: Seq[Flower],
+                         displayedTiles: Seq[Meld],
                          private[core] val handTile: Seq[Tile]
                        ) {
 
@@ -14,7 +15,7 @@ final case class Player(
            tileToDiscard: Tile): Player = {
 
     this.copy(
-      displayedTiles = this.displayedTiles ++ Seq(tile1ToChowWith, tile2ToChowWith, actionableTileToChow),
+      displayedTiles = this.displayedTiles ++ Seq(Chow(tile1ToChowWith, tile2ToChowWith, actionableTileToChow)),
       handTile = this.handTile subtract Seq(tile1ToChowWith, tile2ToChowWith, tileToDiscard)
     )
   }
@@ -23,7 +24,7 @@ final case class Player(
            actionableTileToPung: Tile,
            tileToDiscard: Tile): Player = {
     this.copy(
-      displayedTiles = this.displayedTiles ++ Seq.fill(3)(tileToPung),
+      displayedTiles = this.displayedTiles ++ Seq(Pung(tileToPung)),
       handTile = this.handTile subtract Seq(tileToPung, tileToPung, tileToDiscard)
     )
   }

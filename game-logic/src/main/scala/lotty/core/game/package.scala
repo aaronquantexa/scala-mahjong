@@ -24,14 +24,17 @@ package object game {
     }
 
     /**
-     *
      * @return Non-flowers as first element of tuple, flowers as second element
      */
-    def partitionByFlower(): (Seq[Tile], Seq[Tile]) = {
-      tiles.partition {
-        case _: Flower => false
-        case _ => true
+    def partitionByFlower(): (Seq[Tile], Seq[Flower]) = {
+
+      tiles.foldLeft((Seq.empty[Tile], Seq.empty[Flower])){
+        case ((nonFlowers, flowers), flower: Flower) =>
+          (nonFlowers, flowers ++ Seq(flower))
+        case ((nonFlowers, flowers), nonFlowerTile) =>
+          (nonFlowers ++ Seq(nonFlowerTile), flowers)
       }
+
     }
 
     /**

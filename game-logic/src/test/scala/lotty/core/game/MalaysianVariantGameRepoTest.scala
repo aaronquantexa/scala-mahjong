@@ -23,9 +23,9 @@ class MalaysianVariantGameRepoTest extends AnyFlatSpec with should.Matchers {
       ++ initialisedGame.playerId2.handTile
       ++ initialisedGame.playerId3.handTile
       ++ initialisedGame.pickStack
-      ++ initialisedGame.playerId1.displayedTiles
-      ++ initialisedGame.playerId2.displayedTiles
-      ++ initialisedGame.playerId3.displayedTiles)
+      ++ initialisedGame.playerId1.displayedFlowers
+      ++ initialisedGame.playerId2.displayedFlowers
+      ++ initialisedGame.playerId3.displayedFlowers)
 
     tiles.size should equal(startingTiles.size)
   }

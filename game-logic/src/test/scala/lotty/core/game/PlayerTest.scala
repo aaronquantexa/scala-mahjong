@@ -2,8 +2,7 @@ package lotty.core.game
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
-
-import lotty.core.model.{CircleTile, Green, Red, White}
+import lotty.core.model.{Chow, CircleTile, Green, Pung, Red, White}
 
 class PlayerTest extends AnyFlatSpec with should.Matchers {
 
@@ -11,7 +10,8 @@ class PlayerTest extends AnyFlatSpec with should.Matchers {
 
     val player = Player(
       playerId = PlayerId("test"),
-      displayedTiles = Seq(Red, Red, Red),
+      displayedFlowers = Seq.empty,
+      displayedTiles = Seq(Pung(Red)),
       handTile = Seq(CircleTile(5), CircleTile(6), Green, White)
     )
 
@@ -19,7 +19,8 @@ class PlayerTest extends AnyFlatSpec with should.Matchers {
 
     postChowPlayer should equal(Player(
       playerId = PlayerId("test"),
-      displayedTiles = Seq(Red, Red, Red, CircleTile(5), CircleTile(6), CircleTile(7)),
+      displayedFlowers = Seq.empty,
+      displayedTiles = Seq(Pung(Red), Chow(CircleTile(5), CircleTile(6), CircleTile(7))),
       handTile = Seq(White)
     )
     )
@@ -28,7 +29,8 @@ class PlayerTest extends AnyFlatSpec with should.Matchers {
   it should "pung a 5, to form a set 5,5,5" in {
     val player = Player(
       playerId = PlayerId("test"),
-      displayedTiles = Seq(Red, Red, Red),
+      displayedFlowers = Seq.empty,
+      displayedTiles = Seq(Pung(Red)),
       handTile = Seq(CircleTile(5), CircleTile(5), Green, White)
     )
 
@@ -36,7 +38,8 @@ class PlayerTest extends AnyFlatSpec with should.Matchers {
 
     postPungPlayer should equal(Player(
       playerId = PlayerId("test"),
-      displayedTiles = Seq(Red, Red, Red, CircleTile(5), CircleTile(5), CircleTile(5)),
+      displayedFlowers = Seq.empty,
+      displayedTiles = Seq(Pung(Red), Pung(CircleTile(5))),
       handTile = Seq(White)
     )
     )

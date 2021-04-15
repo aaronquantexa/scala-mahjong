@@ -112,16 +112,19 @@ object MalaysianVariantGameRepo {
       playerId1 = Player(
         playerId1,
         player1DisplayFlowers,
+        Seq.empty[Meld],
         player1TilesInHand
       ),
       playerId2 = Player(
         playerId2,
         player2DisplayFlowers,
+        Seq.empty[Meld],
         player2TilesInHand
       ),
       playerId3 = Player(
         playerId3,
         player3DisplayFlowers,
+        Seq.empty[Meld],
         player3TilesInHand
       ),
       discardedTiles = Seq.empty,

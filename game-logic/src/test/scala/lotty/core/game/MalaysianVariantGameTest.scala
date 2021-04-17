@@ -6,18 +6,18 @@ import org.scalatest.matchers.should
 
 import scala.util.Random
 
-class MalaysianVariantGameRepoTest extends AnyFlatSpec with should.Matchers {
+class MalaysianVariantGameTest extends AnyFlatSpec with should.Matchers {
 
-  val startingTiles: Seq[Tile] = Random.shuffle(MalaysianVariantGameRepo.TilesEnumerated)
+  val startingTiles: Seq[Tile] = Random.shuffle(MalaysianVariantGame.TilesEnumerated)
 
-  val initialisedGame: MalaysianVariantGameRepo = MalaysianVariantGameRepo.initialise(
+  val initialisedGame: MalaysianVariantGame = MalaysianVariantGame.initialise(
     PlayerId("a"),
     PlayerId("b"),
     PlayerId("c"),
     startingTiles
   )
 
-  "MalaysianVariantGameRepo" should "distribute tiles across all players without dropping any" in {
+  "MalaysianVariantGame" should "distribute tiles across all players without dropping any" in {
 
     val tiles = (initialisedGame.playerId1.handTile
       ++ initialisedGame.playerId2.handTile

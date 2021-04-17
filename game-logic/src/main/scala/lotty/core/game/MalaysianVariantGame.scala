@@ -4,14 +4,14 @@ import java.util.logging.Logger
 
 import lotty.core.model._
 
-final case class MalaysianVariantGameRepo(
+final case class MalaysianVariantGame(
                                     playerId1: Player,
                                     playerId2: Player,
                                     playerId3: Player,
-                                    var discardedTiles: Seq[Tile],
+                                    discardedTiles: Seq[Tile],
                                     pickStack: Seq[Tile]
                                   ) {
-  def chow(playerId: PlayerId, tile1ToChowWith: Tile, tile2ToChowWith: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
+  def chow(playerId: PlayerId, tile1ToChowWith: Tile, tile2ToChowWith: Tile, tileToDiscard: Tile): MalaysianVariantGame = {
     val updateDiscards = takeActionablePieceAndDiscard(tileToDiscard)
 
     val updatePlayer = updatePlayerPieces(playerId, Player.chow(tile1ToChowWith,tile2ToChowWith,actionableTile(),tileToDiscard))
@@ -19,7 +19,7 @@ final case class MalaysianVariantGameRepo(
     (updateDiscards andThen updatePlayer)(this)
   }
 
-  def pung(playerId: PlayerId, tileToPung: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
+  def pung(playerId: PlayerId, tileToPung: Tile, tileToDiscard: Tile): MalaysianVariantGame = {
     val updateDiscards = takeActionablePieceAndDiscard(tileToDiscard)
 
     val updatePlayer = updatePlayerPieces(playerId, Player.pung(tileToPung,tileToDiscard))
@@ -27,7 +27,7 @@ final case class MalaysianVariantGameRepo(
     (updateDiscards andThen updatePlayer)(this)
   }
 
-  def kong(playerId: PlayerId, tileToKong: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
+  def kong(playerId: PlayerId, tileToKong: Tile, tileToDiscard: Tile): MalaysianVariantGame = {
     val updateDiscards = takeActionablePieceAndDiscard(tileToDiscard)
 
     val updatePlayer = updatePlayerPieces(playerId, Player.kong(tileToKong, pickStack.head, tileToDiscard))
@@ -35,25 +35,25 @@ final case class MalaysianVariantGameRepo(
     (updateDiscards andThen updatePlayer)(this)
   }
 
-  private def updatePlayerPieces(playerId: PlayerId, action: Player => Player): MalaysianVariantGameRepo => MalaysianVariantGameRepo = {
-    (repo: MalaysianVariantGameRepo) =>
-    if(repo.playerId1.playerId == playerId)
-      repo.copy(
-        playerId1 = action(repo.playerId1)
+  private def updatePlayerPieces(playerId: PlayerId, action: Player => Player): MalaysianVariantGame => MalaysianVariantGame = {
+    (game: MalaysianVariantGame) =>
+    if(game.playerId1.playerId == playerId)
+      game.copy(
+        playerId1 = action(game.playerId1)
       )
     else if(this.playerId2.playerId == playerId)
-      repo.copy(
-        playerId2 = action(repo.playerId2)
+      game.copy(
+        playerId2 = action(game.playerId2)
       )
     else
-      repo.copy(
-        playerId3 = action(repo.playerId3)
+      game.copy(
+        playerId3 = action(game.playerId3)
       )
   }
 
-  private def takeActionablePieceAndDiscard(tileToDiscard: Tile): MalaysianVariantGameRepo => MalaysianVariantGameRepo = {
-    (repo: MalaysianVariantGameRepo) =>
-      repo.copy(
+  private def takeActionablePieceAndDiscard(tileToDiscard: Tile): MalaysianVariantGame => MalaysianVariantGame = {
+    (game: MalaysianVariantGame) =>
+      game.copy(
         discardedTiles = this.discardedTiles.dropLast() ++ Seq(tileToDiscard)
       )
   }
@@ -62,9 +62,9 @@ final case class MalaysianVariantGameRepo(
 
 }
 
-object MalaysianVariantGameRepo {
+object MalaysianVariantGame {
 
-  private val logger = Logger.getLogger("MalaysianVariantGameRepo")
+  private val logger = Logger.getLogger("MalaysianVariantGame")
 
   private val flowers: Seq[Tile] = (1 to 4).map(BlueFlower) ++ (1 to 4).map(RedFlower) ++ (1 to 4).map(AnimalFlower) ++ (1 to 4).map(FaceFlower)
 
@@ -85,7 +85,7 @@ object MalaysianVariantGameRepo {
   def initialise(playerId1: PlayerId,
                  playerId2: PlayerId,
                  playerId3: PlayerId,
-                 startingTiles: Seq[Tile]): MalaysianVariantGameRepo = {
+                 startingTiles: Seq[Tile]): MalaysianVariantGame = {
 
     val player1Tiles = startingTiles.take(14)
     val player2Tiles = startingTiles.slice(14, 27)
@@ -114,7 +114,7 @@ object MalaysianVariantGameRepo {
 
     val (player3TilesInHand, player3DisplayFlowers) = (player3Tiles ++ replacedFlowers.p3).partitionByFlower()
 
-    MalaysianVariantGameRepo(
+    MalaysianVariantGame(
       playerId1 = Player(
         playerId1,
         player1DisplayFlowers,

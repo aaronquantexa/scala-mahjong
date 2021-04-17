@@ -11,68 +11,54 @@ final case class MalaysianVariantGameRepo(
                                     var discardedTiles: Seq[Tile],
                                     pickStack: Seq[Tile]
                                   ) {
-
-  def actionableTile(): Tile = discardedTiles.last
-
   def chow(playerId: PlayerId, tile1ToChowWith: Tile, tile2ToChowWith: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
-    val updateDiscardTiles = this.copy(
-      discardedTiles = this.discardedTiles.dropLast() ++ Seq(tileToDiscard)
-    )
+    val updateDiscards = takeActionablePieceAndDiscard(tileToDiscard)
 
-    if(this.playerId1.playerId == playerId)
-      updateDiscardTiles.copy(
-        playerId1 = updateDiscardTiles.playerId1.chow(tile1ToChowWith,tile2ToChowWith,actionableTile(),tileToDiscard)
-      )
-    else if(this.playerId2.playerId == playerId)
-      updateDiscardTiles.copy(
-        playerId2 = updateDiscardTiles.playerId2.chow(tile1ToChowWith,tile2ToChowWith,actionableTile(),tileToDiscard)
-      )
-    else
-      updateDiscardTiles.copy(
-        playerId3 = updateDiscardTiles.playerId3.chow(tile1ToChowWith,tile2ToChowWith,actionableTile(),tileToDiscard)
-      )
+    val updatePlayer = updatePlayerPieces(playerId, Player.chow(tile1ToChowWith,tile2ToChowWith,actionableTile(),tileToDiscard))
+
+    (updateDiscards andThen updatePlayer)(this)
   }
 
   def pung(playerId: PlayerId, tileToPung: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
-    val updateDiscardTiles = this.copy(
-      discardedTiles = this.discardedTiles.dropLast() ++ Seq(tileToDiscard)
-    )
+    val updateDiscards = takeActionablePieceAndDiscard(tileToDiscard)
 
-    if(this.playerId1.playerId == playerId)
-      updateDiscardTiles.copy(
-        playerId1 = updateDiscardTiles.playerId1.pung(actionableTile(),tileToDiscard)
-      )
-    else if(this.playerId2.playerId == playerId)
-      updateDiscardTiles.copy(
-        playerId2 = updateDiscardTiles.playerId2.pung(actionableTile(),tileToDiscard)
-      )
-    else
-      updateDiscardTiles.copy(
-        playerId3 = updateDiscardTiles.playerId3.pung(actionableTile(),tileToDiscard)
-      )
+    val updatePlayer = updatePlayerPieces(playerId, Player.pung(tileToPung,tileToDiscard))
+
+    (updateDiscards andThen updatePlayer)(this)
   }
 
   def kong(playerId: PlayerId, tileToKong: Tile, tileToDiscard: Tile): MalaysianVariantGameRepo = {
-    val updateDiscardTiles = this.copy(
-      discardedTiles = this.discardedTiles.dropLast() ++ Seq(tileToDiscard)
-    )
+    val updateDiscards = takeActionablePieceAndDiscard(tileToDiscard)
 
-    if (this.playerId1.playerId == playerId)
-      updateDiscardTiles.copy(
-        playerId1 = updateDiscardTiles.playerId1.kong(actionableTile(), pickStack.last, tileToDiscard),
-        pickStack = pickStack.dropLast()
+    val updatePlayer = updatePlayerPieces(playerId, Player.kong(tileToKong, pickStack.head, tileToDiscard))
+
+    (updateDiscards andThen updatePlayer)(this)
+  }
+
+  private def updatePlayerPieces(playerId: PlayerId, action: Player => Player): MalaysianVariantGameRepo => MalaysianVariantGameRepo = {
+    (repo: MalaysianVariantGameRepo) =>
+    if(repo.playerId1.playerId == playerId)
+      repo.copy(
+        playerId1 = action(repo.playerId1)
       )
-    else if (this.playerId2.playerId == playerId)
-      updateDiscardTiles.copy(
-        playerId2 = updateDiscardTiles.playerId2.kong(actionableTile(), pickStack.last, tileToDiscard),
-        pickStack = pickStack.dropLast()
+    else if(this.playerId2.playerId == playerId)
+      repo.copy(
+        playerId2 = action(repo.playerId2)
       )
     else
-      updateDiscardTiles.copy(
-        playerId3 = updateDiscardTiles.playerId3.kong(actionableTile(), pickStack.last, tileToDiscard),
-        pickStack = pickStack.dropLast()
+      repo.copy(
+        playerId3 = action(repo.playerId3)
       )
   }
+
+  private def takeActionablePieceAndDiscard(tileToDiscard: Tile): MalaysianVariantGameRepo => MalaysianVariantGameRepo = {
+    (repo: MalaysianVariantGameRepo) =>
+      repo.copy(
+        discardedTiles = this.discardedTiles.dropLast() ++ Seq(tileToDiscard)
+      )
+  }
+
+  def actionableTile(): Tile = discardedTiles.last
 
 }
 

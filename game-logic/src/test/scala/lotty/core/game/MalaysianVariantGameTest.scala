@@ -1,23 +1,20 @@
 package lotty.core.game
 
-import lotty.core.model.Tile
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
-
-import scala.util.Random
+import lotty.core.model.Util
 
 class MalaysianVariantGameTest extends AnyFlatSpec with should.Matchers {
-
-  val startingTiles: Seq[Tile] = Random.shuffle(MalaysianVariantGame.TilesEnumerated)
 
   val initialisedGame: MalaysianVariantGame = MalaysianVariantGame.initialise(
     PlayerId("a"),
     PlayerId("b"),
-    PlayerId("c"),
-    startingTiles
+    PlayerId("c")
   )
 
   "MalaysianVariantGame" should "distribute tiles across all players without dropping any" in {
+
+    val standardTiles = MalaysianVariantGame.TilesEnumerated.sortBy(Util.circlesFirstSort)
 
     val tiles = (initialisedGame.playerId1.handTile
       ++ initialisedGame.playerId2.handTile
@@ -25,8 +22,8 @@ class MalaysianVariantGameTest extends AnyFlatSpec with should.Matchers {
       ++ initialisedGame.pickStack
       ++ initialisedGame.playerId1.displayedFlowers
       ++ initialisedGame.playerId2.displayedFlowers
-      ++ initialisedGame.playerId3.displayedFlowers)
+      ++ initialisedGame.playerId3.displayedFlowers).sortBy(Util.circlesFirstSort)
 
-    tiles.size should equal(startingTiles.size)
+    tiles should equal(standardTiles)
   }
 }

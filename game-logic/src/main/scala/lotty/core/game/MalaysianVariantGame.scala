@@ -1,8 +1,9 @@
 package lotty.core.game
 
 import java.util.logging.Logger
-
 import lotty.core.model._
+
+import scala.util.Random
 
 final case class MalaysianVariantGame(
                                     playerId1: Player,
@@ -82,10 +83,24 @@ object MalaysianVariantGame {
   /** This bounds the number of iterations when replacing flowers */
   val NumberOfFlowers: Int = flowers.size
 
+  /**
+   * Starts a Malaysian 3-player mahjong game using the given `startingTiles`.
+   * Implements the standard starting rules:
+   *
+   * 1. Player 1 is given 14 tiles, players 2 and 3 are given 13 tiles to start.
+   * 2. If any starting tile is a flower, then this is replaced by taking
+   * another tile, until all tiles are not flowers.
+   *
+   * @param playerId1 Id for player 1
+   * @param playerId2 Id for player 2
+   * @param playerId3 Id for player 3
+   * @param startingTiles Tile set to start play with
+   * @return A game object with tiles distributed to each player and the remainder to be picked.
+   */
   def initialise(playerId1: PlayerId,
                  playerId2: PlayerId,
                  playerId3: PlayerId,
-                 startingTiles: Seq[Tile]): MalaysianVariantGame = {
+                 startingTiles: Seq[Tile] = Random.shuffle(TilesEnumerated)): MalaysianVariantGame = {
 
     val player1Tiles = startingTiles.take(14)
     val player2Tiles = startingTiles.slice(14, 27)

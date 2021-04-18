@@ -12,7 +12,10 @@ object Util {
       case South => 15
       case West => 17
       case North => 18
-      case _: Flower => 20
+      case BlueFlower(num) => 20 + num
+      case RedFlower(num) => 30 + num
+      case AnimalFlower(num) => 40 + num
+      case FaceFlower(num) => 50 + num
     }
   }
 }
